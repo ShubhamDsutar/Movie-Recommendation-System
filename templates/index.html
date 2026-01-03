@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommendation System</title>
+    <style>
+        body {
+            background: #111;
+            color: #fff;
+            font-family: Arial;
+        }
+
+        h1 { 
+            color: #f5c518;
+            padding: 15px 15px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .left {
+            width: 70%;
+            border: 2px solid red;
+        }
+
+        .right {
+            width: 28%;
+            background: #1a1a1a;
+            padding: 15px;
+            margin-right: 20px;
+            border: 2px solid red;
+        }
+
+        input, select, button {
+            padding: 7px;
+            margin: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 8px;
+            padding-left: 12px;
+            border-bottom: 1px solid #333;
+        }
+
+        th { background:#222; }
+
+        .movie-card {
+            padding: 6px;
+            border-bottom: 1px solid #333;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🎬 Movie Recommendation System</h1>
+
+<form method="POST" style="margin-left:15px;">
+    <input type="text" name="movie" placeholder="Search movies" style="border-radius: 18px; padding-left: 18px;">
+
+    <select name="genre">
+        <option value="">All Genres</option>
+        {% for g in genres %}
+        <option value="{{ g }}">{{ g }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="sort">
+        <option value="">Sort</option>
+        <option value="az">Title A–Z</option>
+        <option value="za">Title Z–A</option>
+    </select>
+
+    <button type="submit">Search</button>
+</form>
+
+<div class="container">
+
+    <!-- LEFT SIDE -->
+    <div class="left" style="margin-left:15px">
+        <h3 style="padding-left: 20px;">Movies</h3>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Genres</th>
+            </tr>
+            {% for movie in movies.itertuples() %}
+            <tr>
+                <td>{{ movie.title }}</td>
+                <td>{{ movie.genres }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right">
+        <h3 style="margin-top: 5px; padding-right: 20px;">Recommendations</h3>
+
+        {% if base_movie %}
+            <p>Based on: <b>{{ base_movie }}</b></p>
+
+            {% for rec in recommendations.itertuples() %}
+                <div class="movie-card">
+                    🎥 {{ rec.title }}<br>
+                    <small>{{ rec.genres }}</small>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Search a movie to see recommendations</p>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>
